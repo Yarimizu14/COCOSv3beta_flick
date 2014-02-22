@@ -1,0 +1,47 @@
+reated by http://www.gitignore.io
+
+### Xcode ###
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcworkspace/contents.xcworkspacedata
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xcworkspace
+!default.xcworkspace
+xcuserdata
+profile
+*.moved-aside
+
+# Mac
+.DS_Store
+
+#CocoaPod
+Pods/*
+
+#IDEA
+.idea/*
+
+#cocos2d-x
+cocos2d/*
+!.gitkeep
+proj.linux/
+proj.win32/
+
+libs/
+bin/
+obj/
+assets/
+gen/
+out/
+.classpath
+.project
+.cproject
+
+#JAVA
+*.class
