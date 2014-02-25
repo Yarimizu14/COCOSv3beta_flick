@@ -16,6 +16,8 @@ class GroundPhysics
 
 public:
     GroundPhysics();
+    Sprite* createGround(const Point &p, const Size &s);
+    void createRoundGround();
 };
 
 #endif /* defined(_GROUND_PHYSICS_H_) */

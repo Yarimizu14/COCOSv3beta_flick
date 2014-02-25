@@ -25,7 +25,9 @@ USING_NS_CC_EXT;
 #define TAG_GROUND 100
 
 // 密度、反発係数、摩擦係数の種類を定義
-const struct PhysicsMaterial NormalMaterial = { 1.0f, 0.9f, 0.5f };
-const struct PhysicsMaterial FeverMaterial  = { 0.1f, 0.9f, 0.5f };
+const struct PhysicsMaterial NormalMaterial = { 1.0f, 0.9f, 0.0f };
+const struct PhysicsMaterial FeverMaterial  = { 0.1f, 0.9f, 0.0f };
+
+const struct PhysicsMaterial GroundMaterial  = { 0.1f, 1.0f, 0.0f };
 
 #endif

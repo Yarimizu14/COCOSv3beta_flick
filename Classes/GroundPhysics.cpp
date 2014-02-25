@@ -7,3 +7,19 @@
 //
 
 #include "GroundPhysics.h"
+
+GroundPhysics::GroundPhysics() {
+}
+
+// 片面づつ壁を作成する
+Sprite* GroundPhysics::createGround(const Point &p, const Size &s) {
+    Sprite* gSprite = Sprite::create("ground.png");
+    gSprite->setContentSize(Size(s.width, s.height));
+    gSprite->setPosition(Point(p.x, p.y));
+    
+    return gSprite;
+}
+
+// 4方を囲む壁を作成する
+void GroundPhysics::createRoundGround() {
+}

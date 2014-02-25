@@ -1,5 +1,4 @@
 #include "GameScene.h"
-#include "BallFactory.h"
 
 USING_NS_CC;
 
@@ -57,15 +56,41 @@ bool GameScene::init()
     // CC_CALLBACK_2の2はいくつ引数をとるか
     touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::touchBegan, this);
     getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
+    
+    // 画面と同じサイズで物理境界（Physics Boundary）を生 成
+    auto body = PhysicsBody::createEdgeBox(visibleSize, GroundMaterial, 3);
+    auto edgeNode = Node::create();
+    edgeNode->setPosition(Point(visibleSize.width/2,visibleSize.height/2));
+    edgeNode->setPhysicsBody(body);
+    this->addChild(edgeNode);
+    
+    // ４方向に壁を作るクラス
+    GroundPhysics* gp = new GroundPhysics();
+    
+    Sprite* g_bottom = gp->createGround(Point(visibleSize.width/2,0), Size(visibleSize.width, 10));
+    this->addChild(g_bottom);
+    
+    Sprite* g_top = gp->createGround(Point(visibleSize.width/2,visibleSize.height), Size(visibleSize.width, 10));
+    this->addChild(g_top);
    
+    Sprite* g_left = gp->createGround(Point(0, visibleSize.height/2), Size(visibleSize.width, 10));
+    g_left->setRotation(90);
+    this->addChild(g_left);
+    
+    Sprite* g_right = gp->createGround(Point(visibleSize.width, visibleSize.height/2), Size(visibleSize.width, 10));
+    g_right->setRotation(-90);
+    this->addChild(g_right);
+    
+    
     return true;
 }
 
 bool GameScene::touchBegan(Touch* touch, Event* event) {
+    
     // ファクトリーからボールを生成
     Sprite* ret = bFactory->createBall(touch->getLocation());
-    
     this->addChild((Sprite*)ret);
+
     
     return true;
 }
