@@ -10,6 +10,7 @@
 #define _BALL_FACTORY_H_
 
 #include "config.h";
+#include "BallPhysics.h";
 
 class BallFactory
 {

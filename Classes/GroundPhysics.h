@@ -16,7 +16,6 @@ class GroundPhysics
 
 public:
     GroundPhysics();
-    ~GroundPhysics();
 };
 
 #endif /* defined(_GROUND_PHYSICS_H_) */

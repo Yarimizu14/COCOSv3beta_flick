@@ -11,12 +11,11 @@
 
 #include "config.h";
 
-class BallPhysics
+class BallPhysics: public Sprite
 {
 
 public:
     BallPhysics();
-    ~BallPhysics();
 };
 
 #endif /* defined(_BALL_PHYSICS_H_) */
