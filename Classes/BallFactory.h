@@ -17,7 +17,7 @@ class BallFactory
 
 public:
     BallFactory();
-    virtual Sprite* createBall(Point p);
+    virtual BallPhysics* createBall(Point p);
 };
 
 #endif /* defined(_BALL_FACTORY_H_) */

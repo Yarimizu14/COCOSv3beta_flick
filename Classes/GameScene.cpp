@@ -88,8 +88,8 @@ bool GameScene::init()
 bool GameScene::touchBegan(Touch* touch, Event* event) {
     
     // ファクトリーからボールを生成
-    Sprite* ret = bFactory->createBall(touch->getLocation());
-    this->addChild((Sprite*)ret);
+    BallPhysics* ret = bFactory->createBall(touch->getLocation());
+    this->addChild(ret);
 
     
     return true;
