@@ -1,11 +1,14 @@
 #include "GameScene.h"
+#include "ballFactory.h"
 
 USING_NS_CC;
+
+BallFactory* bFactory = new BallFactory();
 
 Scene* GameScene::createScene()
 {
     // 'scene' is an autorelease object
-    auto scene = Scene::create();
+    auto scene = Scene::createWithPhysics();
     
     // 'layer' is an autorelease object
     auto layer = GameScene::create();
@@ -49,32 +52,23 @@ bool GameScene::init()
     this->addChild(menu, 1);
 
     /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
-    // create and initialize a label
     
-    auto label = LabelTTF::create("Hello World", "Arial", 24);
-    
-    // position the label on the center of the screen
-    label->setPosition(Point(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - label->getContentSize().height));
-
-    // add the label as a child to this layer
-    this->addChild(label, 1);
-
-    // add "GameScene" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-
-    // position the sprite on the center of the screen
-    sprite->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    // add the sprite as a child to this layer
-    this->addChild(sprite, 0);
-    
+    auto touchListener = EventListenerTouchOneByOne::create();
+    // CC_CALLBACK_2の2はいくつ引数をとるか
+    touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::touchBegan, this);
+    getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
+   
     return true;
 }
 
+bool GameScene::touchBegan(Touch* touch, Event* event) {
+    // ファクトリーからボールを生成
+    Sprite* ret = bFactory->createBall(touch->getLocation());
+    
+    this->addChild((Sprite*)ret);
+    
+    return true;
+}
 
 void GameScene::menuCloseCallback(Object* pSender)
 {
