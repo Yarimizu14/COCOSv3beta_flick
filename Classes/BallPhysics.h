@@ -11,12 +11,12 @@
 
 #include "config.h";
 
-class ballPhysics
+class BallPhysics
 {
 
 public:
-    ballPhysics();
-    ~ballPhysics();
+    BallPhysics();
+    ~BallPhysics();
 };
 
-#endif /* defined(__cocos_flick__bulletPhysics__) */
+#endif /* defined(_BALL_PHYSICS_H_) */

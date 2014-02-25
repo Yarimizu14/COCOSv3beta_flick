@@ -11,12 +11,12 @@
 
 #include "config.h";
 
-class groundPhysics
+class GroundPhysics
 {
 
 public:
-    groundPhysics();
-    ~groundPhysics();
+    GroundPhysics();
+    ~GroundPhysics();
 };
 
-#endif /* defined(__cocos_flick__groundPhysics__) */
+#endif /* defined(_GROUND_PHYSICS_H_) */

@@ -1,5 +1,5 @@
 #include "GameScene.h"
-#include "ballFactory.h"
+#include "BallFactory.h"
 
 USING_NS_CC;
 
