@@ -18,6 +18,7 @@ class BallFactory
 public:
     BallFactory();
     virtual BallPhysics* createBall(Point p);
+    int ballNum = 0;
 };
 
 #endif /* defined(_BALL_FACTORY_H_) */

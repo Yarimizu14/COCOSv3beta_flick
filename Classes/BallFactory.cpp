@@ -15,8 +15,10 @@ BallFactory::BallFactory() {
 /* TODO: 敵もこのファクトリーから生成出来るように？ */
 BallPhysics* BallFactory::createBall(Point p) {
     
+    this->ballNum++;
     // スプライトの生成と追加
     BallPhysics* pSprite = new BallPhysics();
+    pSprite->setTag(this->ballNum);
 	pSprite->setPosition(p);
     
     return pSprite;
