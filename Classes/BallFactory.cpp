@@ -23,3 +23,29 @@ BallPhysics* BallFactory::createBall(Point p) {
     
     return pSprite;
 }
+
+BallPhysics* BallFactory::createBall(Point p, Point force) {
+    
+    // タグの番号を更新
+    this->ballNum++;
+    
+    // スプライトの生成と追加
+    BallPhysics* pSprite = new BallPhysics(force);
+    pSprite->setTag(100 + this->ballNum);
+	pSprite->setPosition(p);
+    
+    return pSprite;
+}
+
+TargetPhysics* BallFactory::createTarget(Point p) {
+    
+    // タグの番号を更新
+    this->targetNum++;
+    
+    // スプライトの生成と追加
+    TargetPhysics* pSprite = new TargetPhysics();
+    pSprite->setTag(200 + this->targetNum);
+	pSprite->setPosition(p);
+    
+    return pSprite;
+}

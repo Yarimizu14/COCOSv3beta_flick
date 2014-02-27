@@ -17,6 +17,9 @@ Sprite* GroundPhysics::createGround(const Point &p, const Size &s) {
     gSprite->setContentSize(Size(s.width, s.height));
     gSprite->setPosition(Point(p.x, p.y));
     
+    // *地面は重力の影響を受けない
+	//pBody->setDynamic(false);
+    
     return gSprite;
 }
 

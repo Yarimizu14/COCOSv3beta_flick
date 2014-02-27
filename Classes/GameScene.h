@@ -20,6 +20,9 @@ public:
     void menuCloseCallback(Object* pSender);
     
     bool touchBegan(Touch *touch, Event* event);
+    void touchEnded(Touch* touch, Event* event);
+    void touchMoved(Touch *touch, Event* event);
+    void touchCancelled(Touch* touch, Event* event);
     
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);

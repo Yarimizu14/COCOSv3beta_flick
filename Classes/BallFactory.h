@@ -11,6 +11,7 @@
 
 #include "config.h";
 #include "BallPhysics.h";
+#include "TargetPhysics.h";
 
 class BallFactory
 {
@@ -18,7 +19,12 @@ class BallFactory
 public:
     BallFactory();
     virtual BallPhysics* createBall(Point p);
+    virtual BallPhysics* createBall(Point p, Point force);
+    virtual TargetPhysics* createTarget(Point p);
+    
+    // 各タグ番号の初期化
     int ballNum = 0;
+    int targetNum = 0;
 };
 
 #endif /* defined(_BALL_FACTORY_H_) */

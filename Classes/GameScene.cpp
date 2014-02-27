@@ -4,10 +4,14 @@ USING_NS_CC;
 
 BallFactory* bFactory = new BallFactory();
 
+// 弾いた強さを測定するための変数
+Point startPoint, userForce;
+
 Scene* GameScene::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
+    scene->getPhysicsWorld()->setGravity(Point(0,0));
     
     // 'layer' is an autorelease object
     auto layer = GameScene::create();
@@ -53,9 +57,15 @@ bool GameScene::init()
     /////////////////////////////
     
     auto touchListener = EventListenerTouchOneByOne::create();
+    
     // CC_CALLBACK_2の2はいくつ引数をとるか
     touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::touchBegan, this);
+    touchListener->onTouchMoved = CC_CALLBACK_2(GameScene::touchMoved, this);
+    touchListener->onTouchEnded = CC_CALLBACK_2(GameScene::touchEnded, this);
+    touchListener->onTouchCancelled = CC_CALLBACK_2(GameScene::touchCancelled, this);
+    
     getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
+    this->setTag(1000);
     
     // 画面と同じサイズで物理境界（Physics Boundary）を生 成
     auto body = PhysicsBody::createEdgeBox(visibleSize, GroundMaterial, 3);
@@ -81,18 +91,59 @@ bool GameScene::init()
     g_right->setRotation(-90);
     this->addChild(g_right);
     
+    return true;
+}
+
+// タッチが始まったときの処理
+// * return falseにするとmoved, endedなどの処理は行われない
+bool GameScene::touchBegan(Touch* touch, Event* event) {
+    
+    // タッチ開始点
+    startPoint = touch->getLocation();
+    
+    // 加える力の初期化
+    userForce = Point(0.0f, 0.0f);
+    
+    log("===");
+    log("Layer is touched");   
+    Node* t = event->getCurrentTarget();
+    if (t == 0) {
+        log("test:%d", t);
+    } else {
+        log("tag : %d", event->getCurrentTarget()->getTag());
+    }
     
     return true;
 }
 
-bool GameScene::touchBegan(Touch* touch, Event* event) {
+// タッチする指を動かしたときの処理
+void GameScene::touchMoved(Touch *touch, Event* event) {
     
-    // ファクトリーからボールを生成
-    BallPhysics* ret = bFactory->createBall(touch->getLocation());
-    this->addChild(ret);
+    //userForce = startPoint.operator-(touch->getLocation());
+    userForce = touch->getLocation().operator-(startPoint);
+    
+}
 
+// タッチが終わったときの処理
+void GameScene::touchEnded(Touch* touch, Event* event) {
     
-    return true;
+    // 動かした距離を測定
+    float distance = userForce.getLengthSq();
+    
+    // 動かした距離が小さい場合はターゲットを設置する
+    if (distance < 100) {
+        // ファクトリーからターゲットを作成
+        TargetPhysics* tret = bFactory->createTarget(touch->getLocation());
+        this->addChild(tret);
+    } else {
+        // ファクトリーからボールを生成
+        BallPhysics* ret = bFactory->createBall(touch->getLocation(), userForce);
+        this->addChild(ret);
+    }
+    
+}
+
+void GameScene::touchCancelled(Touch* touch, Event* event) {
 }
 
 void GameScene::menuCloseCallback(Object* pSender)
