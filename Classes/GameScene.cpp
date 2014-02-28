@@ -7,6 +7,7 @@ BallFactory* bFactory = new BallFactory();
 // 弾いた強さを測定するための変数
 Point startPoint, userForce;
 
+// AppDelegate::applicationDidFinishLaunching内で実行されreturnされたSceneでdirector->runWithScene(scene)で画面に表示される！？
 Scene* GameScene::createScene()
 {
     // 'scene' is an autorelease object
@@ -17,13 +18,14 @@ Scene* GameScene::createScene()
     auto layer = GameScene::create();
 
     // add layer as a child to scene
-    scene->addChild(layer, 0);
+    scene->addChild(layer);
 
     // return the scene
     return scene;
 }
 
 // on "init" you need to initialize your instance
+// GameScene::createの中で呼ばれる！？
 bool GameScene::init()
 {
     //////////////////////////////
@@ -58,6 +60,15 @@ bool GameScene::init()
     
     this->setTag(1000);
     
+    this->initEvent();
+    this->initGround();
+    
+    return true;
+}
+
+// イベントを初期化するメソッド
+void GameScene::initEvent() {
+    
     // =========イベントの設置=========
     auto touchListener = EventListenerTouchOneByOne::create();
     
@@ -71,6 +82,13 @@ bool GameScene::init()
     
     // *これをtrueにするとBallPhysicsやTargetPhysicsなどこのSceneにaddChildしたオブジェクトのtouchイベントは発火しない
     //touchListener->setSwallowTouches(true);
+    
+}
+
+// フィールドを初期化する（周囲の壁を作成する）メソッド
+void GameScene::initGround() {
+    
+    Size visibleSize = Director::getInstance()->getVisibleSize();
     
     // =========壁の設置=========
     // 画面と同じサイズで物理境界（Physics Boundary）を生成
@@ -97,7 +115,6 @@ bool GameScene::init()
     g_right->setRotation(-90);
     this->addChild(g_right);
     
-    return true;
 }
 
 // タッチが始まったときの処理
@@ -132,11 +149,11 @@ void GameScene::touchEnded(Touch* touch, Event* event) {
     if (distance < 100) {
         // ファクトリーからターゲットを作成
         TargetPhysics* tret = bFactory->createTarget(touch->getLocation());
-        this->addChild(tret, 2);
+        this->addChild(tret, kZOrderBall);
     } else {
         // ファクトリーからボールを生成
         BallPhysics* ret = bFactory->createBall(touch->getLocation(), userForce);
-        this->addChild(ret, 1);
+        this->addChild(ret, kZOrderTarget);
     }
     
 }

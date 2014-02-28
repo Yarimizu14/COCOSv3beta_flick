@@ -31,4 +31,24 @@ const struct PhysicsMaterial FeverMaterial  = { 0.1f, 0.9f, 0.0f };
 
 const struct PhysicsMaterial GroundMaterial  = { 0.1f, 1.0f, 0.0f };
 
+// ZOrderの定数定義（同階層だったぱ場合、ZOrderが大きい順にイベントが呼ばれる！？）
+enum kZOrder {
+    kZOrderMainLayer = 2,
+    kZOrderBaseLayer = 1,
+    
+    kZOrderBall   = 100,
+    kZOrderTarget = 200
+};
+
+// タグの定数定義
+enum kTag {
+    kTagMainLayer = 2,
+    kTagBaseLayer = 1,
+    
+    // 100番台のタグはBallPhysics
+    kTagBall   = 100,
+    // 200番台のタグはTargetPhysics
+    kTagTarget = 200
+};
+
 #endif
