@@ -24,10 +24,12 @@ TargetPhysics::TargetPhysics() {
     // CC_CALLBACK_2の2はいくつ引数をとるか
     touchListener->onTouchBegan = CC_CALLBACK_2(TargetPhysics::touchBegan, this);
     
-    getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
+    getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
 }
 
 bool TargetPhysics::touchBegan(Touch *touch, Event* event) {
+    log("TargetPhysics is touched : Tag = %d", this->getTag());
+    log("TargetPhysics is touched : Zin = %d", this->getZOrder());
 }
 
 void TargetPhysics::touchEnded(Touch* touch, Event* event) {

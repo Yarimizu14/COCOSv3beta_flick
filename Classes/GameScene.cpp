@@ -17,7 +17,7 @@ Scene* GameScene::createScene()
     auto layer = GameScene::create();
 
     // add layer as a child to scene
-    scene->addChild(layer);
+    scene->addChild(layer, 0);
 
     // return the scene
     return scene;
@@ -56,6 +56,9 @@ bool GameScene::init()
 
     /////////////////////////////
     
+    this->setTag(1000);
+    
+    // =========イベントの設置=========
     auto touchListener = EventListenerTouchOneByOne::create();
     
     // CC_CALLBACK_2の2はいくつ引数をとるか
@@ -64,10 +67,13 @@ bool GameScene::init()
     touchListener->onTouchEnded = CC_CALLBACK_2(GameScene::touchEnded, this);
     touchListener->onTouchCancelled = CC_CALLBACK_2(GameScene::touchCancelled, this);
     
-    getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 100);
-    this->setTag(1000);
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
     
-    // 画面と同じサイズで物理境界（Physics Boundary）を生 成
+    // *これをtrueにするとBallPhysicsやTargetPhysicsなどこのSceneにaddChildしたオブジェクトのtouchイベントは発火しない
+    //touchListener->setSwallowTouches(true);
+    
+    // =========壁の設置=========
+    // 画面と同じサイズで物理境界（Physics Boundary）を生成
     auto body = PhysicsBody::createEdgeBox(visibleSize, GroundMaterial, 3);
     auto edgeNode = Node::create();
     edgeNode->setPosition(Point(visibleSize.width/2,visibleSize.height/2));
@@ -104,14 +110,7 @@ bool GameScene::touchBegan(Touch* touch, Event* event) {
     // 加える力の初期化
     userForce = Point(0.0f, 0.0f);
     
-    log("===");
-    log("Layer is touched");   
-    Node* t = event->getCurrentTarget();
-    if (t == 0) {
-        log("test:%d", t);
-    } else {
-        log("tag : %d", event->getCurrentTarget()->getTag());
-    }
+    //event->stopPropagation();
     
     return true;
 }
@@ -119,7 +118,6 @@ bool GameScene::touchBegan(Touch* touch, Event* event) {
 // タッチする指を動かしたときの処理
 void GameScene::touchMoved(Touch *touch, Event* event) {
     
-    //userForce = startPoint.operator-(touch->getLocation());
     userForce = touch->getLocation().operator-(startPoint);
     
 }
@@ -134,11 +132,11 @@ void GameScene::touchEnded(Touch* touch, Event* event) {
     if (distance < 100) {
         // ファクトリーからターゲットを作成
         TargetPhysics* tret = bFactory->createTarget(touch->getLocation());
-        this->addChild(tret);
+        this->addChild(tret, 2);
     } else {
         // ファクトリーからボールを生成
         BallPhysics* ret = bFactory->createBall(touch->getLocation(), userForce);
-        this->addChild(ret);
+        this->addChild(ret, 1);
     }
     
 }
